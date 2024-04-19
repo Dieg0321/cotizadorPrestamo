@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
 import { StyleSheet, TextInput, View, } from "react-native";
 import colors from "../assets/colors";
-import { Picker } from '@react-native-picker/picker';
+import Footer from "../components/Footer"
 
-export default function Form() {
-    const [selectedValue, setSelectedValue] = useState(0);
+export default function Form(props) {
+    const { setCapital, setInterest, setMonths, selectedValue, setSelectedValue } = props;
 
     return (
         <View style={styles.viewForm}>
@@ -13,27 +14,29 @@ export default function Form() {
                     placeholder="Cantidad a pedir"
                     keyboardType="numeric"
                     style={styles.input}
+                    onChange={e => setCapital(e.nativeEvent.text)}
                 />
                 <TextInput
                     placeholder="Interes %"
                     keyboardType="numeric"
                     style={[styles.input, styles.inputPercentage]}
+                    onChange={e => setInterest(e.nativeEvent.text)}
                 />
 
             </View>
             <View style={styles.pickerContainer}>
                 <Picker
                     selectedValue={selectedValue}
-                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                    onValueChange={(itemValue, itemIndex) => { setSelectedValue(itemValue); setMonths(itemValue) }}
                     style={styles.picker}
                 >
+                    <Picker.Item label="Selecciona los meses" value={null} />
                     <Picker.Item label="3 meses" value={3} />
                     <Picker.Item label="6 meses" value={6} />
                     <Picker.Item label="12 meses" value={12} />
                     <Picker.Item label="24 meses" value={24} />
                 </Picker>
             </View>
-
         </View >
     )
 }
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     picker: {
-        color: 'white',
+        backgroundColor: 'white',
         height: 50,
         width: '100%',
         color: '#000',
